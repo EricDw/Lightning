@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "TheDesktopApplication",
+            "type": "gradle",
+            "workingDir": "$PROJECT_DIR$",
+            "tasks": [
+                ":composeApp:clean",
+                ":composeApp:desktopTest",
+                "--tests",
+                "\"TheDesktopApplication\""
+            ],
+            "args": [
+                ""
+            ],
+            "initScripts": {
+                "flmapper": "ext.mapPath = { path -> path }"
+            }
+        }
+    ]
+}
