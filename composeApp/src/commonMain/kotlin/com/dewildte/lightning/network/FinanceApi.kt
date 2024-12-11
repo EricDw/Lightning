@@ -1,8 +1,8 @@
 package com.dewildte.lightning.network
 
-import com.dewildte.lightning.finance.ReadTransaction
-import com.dewildte.lightning.finance.TransactionId
-import com.dewildte.lightning.finance.WriteTransaction
+import com.dewildte.lightning.finance.TransactionDTO
+import com.dewildte.lightning.finance.IdentifierDTO
+import com.dewildte.lightning.finance.TransactionModel
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -29,15 +29,15 @@ class FinanceApi {
         }
     }
 
-    suspend fun retrieveAllTransactions(): List<ReadTransaction> {
+    suspend fun retrieveAllTransactions(): List<TransactionDTO> {
         return httpClient.get("/finance/transactions").body()
     }
 
-    suspend fun insertTransaction(transaction: WriteTransaction) {
+    suspend fun insertTransaction(transaction: TransactionModel) {
 
     }
 
-    suspend fun deleteTransaction(transactionId: TransactionId) {
+    suspend fun deleteTransaction(identifierDTO: IdentifierDTO) {
 
     }
 

@@ -3,6 +3,7 @@ package com.dewildte.lightning
 import androidx.compose.ui.window.ApplicationScope
 import com.dewildte.lightning.application.api.LightningApplication
 import com.dewildte.lightning.network.FinanceApi
+import io.ktor.http.cio.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,19 +16,11 @@ class DesktopLightningApplication(
 
     private val financeApi by lazy { FinanceApi() }
 
-    private val _state = MutableStateFlow(LightningApplication.State())
-    override val state: StateFlow<LightningApplication.State> =
-        _state.asStateFlow()
-
     override suspend fun recieve(message: LightningApplication.Message) {
         when (message) {
             is LightningApplication.Message.GetPlatform -> {
-                delay(3000)
-                _state.update { oldState ->
-                    oldState.copy(
-                        isLoading = false
-                    )
-                }
+                val platform = getPlatform()
+                message.response.complete(platform)
             }
 
             is LightningApplication.Message.RetrieveTransactions -> {

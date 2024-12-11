@@ -3,42 +3,55 @@ package com.dewildte.lightning.finance
 class InMemoryTransactionRepository : TransactionRepository {
 
     private val _transactions = mutableMapOf(
-        TransactionId(value = "0") to ReadTransaction(
-            id = TransactionId(value = "0"),
+        IdentifierDTO(value = "0") to TransactionDTO(
+            id = IdentifierDTO(value = "0"),
             source = "VISA",
             destination = "Big Box Store",
-            note = "Chairs and things",
-            amount = Money(value = -5)
+            note = "Bought chairs",
+            moneyDTO = MoneyDTO(value = -5),
+            tags = listOf(
+                TagDTO(
+                    identifierDTO = IdentifierDTO("0"),
+                    label = "Household"
+                )
+            )
         ),
-        TransactionId(value = "1") to ReadTransaction(
-            id = TransactionId(value = "1"),
-            source = "VISA",
-            note = "Soup",
-            destination = "Resturant",
-            amount = Money(value = 5)
+        IdentifierDTO(value = "1") to TransactionDTO(
+            id = IdentifierDTO(value = "1"),
+            source = "Big Box Store",
+            destination = "VISA",
+            note = "Returned chairs",
+            moneyDTO = MoneyDTO(value = 5),
+            tags = listOf(
+                TagDTO(
+                    identifierDTO = IdentifierDTO("0"),
+                    label = "Household"
+                )
+            ),
         ),
     )
 
-    override suspend fun retrieveAllTransactions(): List<ReadTransaction> {
+    override suspend fun retrieveAllTransactions(): List<TransactionDTO> {
         return _transactions.values.toList()
     }
 
-    override suspend fun insertTransaction(transaction: WriteTransaction) {
-        val readTransaction = with(transaction) {
-            ReadTransaction(
+    override suspend fun insertTransaction(transaction: TransactionModel) {
+        val transactionDTO = with(transaction) {
+            TransactionDTO(
                 id = id,
                 source = source,
                 destination = destination,
                 note = note,
-                amount = amount
+                moneyDTO = moneyDTO,
+                tags = emptyList(),
             )
         }
 
-        _transactions[readTransaction.id] = readTransaction
+        _transactions[transactionDTO.id] = transactionDTO
     }
 
-    override suspend fun deleteTransaction(transactionId: TransactionId) {
-        _transactions.remove(transactionId)
+    override suspend fun deleteTransaction(identifierDTO: IdentifierDTO) {
+        _transactions.remove(identifierDTO)
     }
 
 }

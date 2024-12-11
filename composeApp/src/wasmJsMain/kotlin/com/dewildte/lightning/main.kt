@@ -1,18 +1,15 @@
 package com.dewildte.lightning
 
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
-import com.dewildte.lightning.design.components.LightningApplicationScaffold
+import com.dewildte.lightning.application.LightningApplicationController
 import kotlinx.browser.document
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    val model = WASMLightningApplication()
     ComposeViewport(document.body!!) {
-        val model = remember {
-            WASMLightningApplication()
-        }
-        LightningApplicationScaffold(
+        LightningApplicationController(
             model = model
         )
     }

@@ -11,11 +11,6 @@ class AndroidLightningApplication : Application(), LightningApplication {
 
     private val financeApi by lazy { FinanceApi() }
 
-    private val _state = MutableStateFlow(LightningApplication.State())
-
-    override val state: StateFlow<LightningApplication.State> =
-        _state.asStateFlow()
-
     override fun onCreate() {
         super.onCreate()
     }
@@ -23,7 +18,8 @@ class AndroidLightningApplication : Application(), LightningApplication {
     override suspend fun recieve(message: LightningApplication.Message) {
         when (message) {
             is LightningApplication.Message.GetPlatform -> {
-                message.response(getPlatform())
+                val platform = getPlatform()
+                message.response.complete(platform)
             }
 
             is LightningApplication.Message.RetrieveTransactions -> {

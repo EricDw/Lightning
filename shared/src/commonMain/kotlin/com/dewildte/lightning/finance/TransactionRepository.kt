@@ -1,10 +1,10 @@
 package com.dewildte.lightning.finance
 
 interface TransactionRepository  {
-    suspend fun retrieveAllTransactions() : List<ReadTransaction>
+    suspend fun retrieveAllTransactions() : List<TransactionDTO>
 
-    suspend fun insertTransaction(transaction: WriteTransaction)
+    suspend fun insertTransaction(transaction: TransactionModel)
 
-    suspend fun deleteTransaction(transactionId: TransactionId)
+    suspend fun deleteTransaction(identifierDTO: IdentifierDTO)
 
 }
