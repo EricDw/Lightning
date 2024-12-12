@@ -1,6 +1,7 @@
 package com.dewildte.lightning
 
-import com.dewildte.lightning.finance.InMemoryTransactionRepository
+import com.dewildte.lightning.application.api.LightningApplication
+import com.dewildte.lightning.feature.transactions.InMemoryTransactionRepository
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -11,25 +12,26 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun main() {
+    val model = ServerLightningApplication()
+
     embeddedServer(
         factory = Netty,
         configure = { envConfig() },
-        module = Application::module
+        module = { module(model) }
     ).start(wait = true)
 }
 
-fun Application.module() {
+fun Application.module(
+    model: LightningApplication
+) {
 
     install(plugin = ContentNegotiation) {
         json()
     }
 
-    val transactionRepository = InMemoryTransactionRepository()
-
     routing {
         get("/") {
-            val greeting = Greeting().greet()
-            val payload = """{"greeting"="$greeting"}""".trimMargin()
+            val payload = """{}""".trimMargin()
             call.respondText(
                 text = payload,
                 contentType = ContentType.parse("application/json"),
@@ -39,10 +41,21 @@ fun Application.module() {
 
         route("/finance") {
             get("/transactions") {
-                val transactions = transactionRepository.retrieveAllTransactions()
-                call.respond(
-                    message = transactions,
-                )
+                val message = LightningApplication.Message.RetrieveTransactions()
+                model.recieve(message)
+                try {
+                    val transactions = message.response.await()
+                    call.respond(
+                        status = HttpStatusCode.Found,
+                        message = transactions,
+                    )
+                } catch (error: Throwable) {
+                    call.respond(
+                        status = HttpStatusCode.BadRequest,
+                        message = error,
+                    )
+                }
+
             }
         }
     }

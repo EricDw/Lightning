@@ -1,4 +1,4 @@
-package com.dewildte.lightning.finance
+package com.dewildte.lightning.feature.transactions.data
 
 import kotlinx.serialization.Serializable
 

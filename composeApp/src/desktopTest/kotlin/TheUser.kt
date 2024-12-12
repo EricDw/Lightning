@@ -1,7 +1,6 @@
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runDesktopComposeUiTest
-import com.dewildte.lightning.application.api.LightningApplication
-import kotlinx.coroutines.flow.StateFlow
+import com.dewildte.lightning.application.LightningApplication
 import kotlin.test.Test
 
 /**
@@ -16,8 +15,6 @@ class TheUser {
         val fileName = "LightningTestFile"
 
         val model = object : LightningApplication {
-            override val state: StateFlow<LightningApplication.State>
-                get() = TODO("Not yet implemented")
 
             override suspend fun recieve(message: LightningApplication.Message) {
                 TODO("Not yet implemented")

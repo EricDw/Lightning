@@ -1,14 +1,9 @@
 package com.dewildte.lightning
 
 import androidx.compose.ui.window.ApplicationScope
-import com.dewildte.lightning.application.api.LightningApplication
+import com.dewildte.lightning.application.LightningApplication
+import com.dewildte.lightning.feature.transactions.data.TransactionMapper
 import com.dewildte.lightning.network.FinanceApi
-import io.ktor.http.cio.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 class DesktopLightningApplication(
     applicationScope: ApplicationScope
@@ -25,7 +20,9 @@ class DesktopLightningApplication(
 
             is LightningApplication.Message.RetrieveTransactions -> {
                 try {
+                    val mapper = TransactionMapper()
                     val transactions = financeApi.retrieveAllTransactions()
+                        .map(mapper::mapTransactionDtoToTransaction)
                     message.response.complete(transactions)
                 } catch (error: Throwable) {
                     message.response.completeExceptionally(error)

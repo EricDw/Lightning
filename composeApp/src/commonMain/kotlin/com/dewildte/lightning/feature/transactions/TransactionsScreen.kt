@@ -1,11 +1,12 @@
 package com.dewildte.lightning.feature.transactions
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,11 +16,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dewildte.lightning.design.components.LargePanel
 import com.dewildte.lightning.feature.transactions.components.TransactionCard
 import com.dewildte.lightning.feature.transactions.sample.sampleTransactonList
-import com.dewildte.lightning.finance.MoneyDTO
-import com.dewildte.lightning.finance.TransactionDTO
-import com.dewildte.lightning.finance.IdentifierDTO
+import com.dewildte.lightning.feature.transactions.data.TransactionDTO
 import lightning.composeapp.generated.resources.Res
-import lightning.composeapp.generated.resources.message_loading
 import lightning.composeapp.generated.resources.message_loading_transactions
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

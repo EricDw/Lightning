@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.dewildte.lightning.feature.transactions.sample.sampleNegativeTransaction
 import com.dewildte.lightning.feature.transactions.sample.samplePositiveTransaction
-import com.dewildte.lightning.finance.TransactionDTO
+import com.dewildte.lightning.feature.transactions.data.TransactionDTO
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -21,7 +21,7 @@ fun TransactionCard(
     onClick: () -> Unit = {},
 ) {
 
-    val amount = transaction.moneyDTO.value
+    val amount = transaction.money.value
 
     val borderColor = when {
         amount < 0 -> {
