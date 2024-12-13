@@ -11,7 +11,7 @@ class TransactionMapper {
     fun mapTransactionToTransactionDto(transaction: Transaction): TransactionDTO {
         return with(transaction) {
             TransactionDTO(
-                id = TransactionIdDTO(value = id.value.toString()),
+                id = TransactionIdDTO(value = id.value),
                 source = SourceDTO(value = source.value),
                 destination = DestinationDTO(destination.value),
                 date = TransactionDateDTO(value = date.value.toString()),
@@ -25,10 +25,10 @@ class TransactionMapper {
     fun mapTransactionDtoToTransaction(dto: TransactionDTO): Transaction {
         return with(dto) {
             Transaction(
-                id = TransactionId(value = Uuid.parse(id.value).toString()),
+                id = TransactionId(value = id.value),
                 source = Source(value = source.value),
                 destination = Destination(destination.value),
-                date = TransactionDate(value = LocalDate.parse(date.value).toString()),
+                date = TransactionDate(value = LocalDate.parse(date.value)),
                 note = Note(note.value),
                 money = Money(money.value),
                 tags = tags.map(tagMapper::mapTagDtoToTag)

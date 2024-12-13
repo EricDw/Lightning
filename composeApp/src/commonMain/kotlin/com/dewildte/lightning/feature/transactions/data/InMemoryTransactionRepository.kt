@@ -9,10 +9,10 @@ import kotlin.uuid.Uuid
 
 class InMemoryTransactionRepository : TransactionRepository {
 
-    private val transactionId1 = TransactionId(value = "0")
-    private val transactionId2 = TransactionId(value = "1")
+    private val transactionId1 = TransactionId(value = "550e8400-e29b-41d4-a716-446655440000")
+    private val transactionId2 = TransactionId(value = "550e8400-e29b-41d4-a716-446655440001")
 
-    private val tagId1 = TagId(value = "0")
+    private val tagId1 = TagId(value = "550e8400-e29b-41d4-a716-446655440002")
 
     private val _transactions = mutableMapOf(
         transactionId1 to Transaction(
@@ -24,7 +24,7 @@ class InMemoryTransactionRepository : TransactionRepository {
                     year = 2024,
                     monthNumber = 12,
                     dayOfMonth = 31
-                ).toString()
+                ),
             ),
             note = Note("Bought chairs"),
             money = Money(value = -5),
@@ -32,7 +32,7 @@ class InMemoryTransactionRepository : TransactionRepository {
                 Tag(
                     id = tagId1,
                     label = TagLabel("Household")
-                )
+                ),
             )
         ),
         transactionId2 to Transaction(
@@ -44,7 +44,7 @@ class InMemoryTransactionRepository : TransactionRepository {
                     year = 2025,
                     monthNumber = 1,
                     dayOfMonth = 1
-                ).toString()
+                ),
             ),
             note = Note("Returned chairs"),
             money = Money(value = 5),

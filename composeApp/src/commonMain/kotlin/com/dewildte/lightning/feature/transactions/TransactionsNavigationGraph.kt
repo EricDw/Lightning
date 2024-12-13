@@ -24,10 +24,7 @@ fun NavGraphBuilder.transactionsGraph(
         composable<TransactionsScreenRoute>() {
 
             TransactionsScreenController(
-                viewModel = viewModel { TransactionsScreenViewModel(model = model) },
-                navigateToTransactionDetails = { transaction ->
-                    TODO("Not yet implemented")
-                }
+                viewModel = viewModel { TransactionsScreenViewModel(model = model) }
             )
 
         }

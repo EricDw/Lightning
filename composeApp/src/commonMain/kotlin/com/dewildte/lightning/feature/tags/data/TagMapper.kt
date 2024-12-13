@@ -9,7 +9,7 @@ class TagMapper {
     fun mapTagToTagDto(tag: Tag): TagDTO {
         return with(tag) {
             TagDTO(
-                id = TagIdDTO(value = id.value.toString()),
+                id = TagIdDTO(value = id.value),
                 label = TagLabelDTO(value = label.value)
             )
         }
@@ -18,7 +18,7 @@ class TagMapper {
     fun mapTagDtoToTag(dto: TagDTO): Tag {
         return with(dto) {
             Tag(
-                id = TagId(value = Uuid.parse(dto.id.value).toString()),
+                id = TagId(value = dto.id.value),
                 label = TagLabel(value = dto.label.value)
             )
         }
