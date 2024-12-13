@@ -8,6 +8,7 @@ data class TransactionDTO(
     val id: TransactionIdDTO,
     val source: SourceDTO,
     val destination: DestinationDTO,
+    val date: TransactionDateDTO,
     val note: NoteDTO,
     val money: MoneyDTO,
     val tags: List<TagDTO>,

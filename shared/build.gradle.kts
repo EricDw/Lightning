@@ -16,9 +16,15 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        // Uuid OptIn
+        optIn.add("kotlin.uuid.ExperimentalUuidApi")
+    }
+
     jvm()
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser {
@@ -35,7 +41,7 @@ kotlin {
             }
         }
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here

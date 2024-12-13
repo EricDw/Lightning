@@ -1,7 +1,7 @@
 package com.dewildte.lightning
 
 import com.dewildte.lightning.application.api.LightningApplication
-import com.dewildte.lightning.feature.transactions.InMemoryTransactionRepository
+import com.dewildte.lightning.feature.transactions.data.TransactionMapper
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -41,12 +41,15 @@ fun Application.module(
 
         route("/finance") {
             get("/transactions") {
+                val mapper = TransactionMapper()
                 val message = LightningApplication.Message.RetrieveTransactions()
                 model.recieve(message)
+
                 try {
                     val transactions = message.response.await()
+                        .map(mapper::mapTransactionToTransactionDto)
                     call.respond(
-                        status = HttpStatusCode.Found,
+                        status = HttpStatusCode.OK,
                         message = transactions,
                     )
                 } catch (error: Throwable) {

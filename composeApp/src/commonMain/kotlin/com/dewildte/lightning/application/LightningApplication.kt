@@ -6,7 +6,7 @@ import com.dewildte.lightning.feature.transactions.model.Transaction
 import kotlinx.coroutines.CompletableDeferred
 
 interface LightningApplication {
-
+    
     suspend fun recieve(message: Message)
 
     sealed class Message {

@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-rt com.dewildte.lightning.feature.transactions.TransactionsRoute
+import com.dewildte.lightning.feature.transactions.TransactionsRoute
 import com.dewildte.lightning.feature.transactions.transactionsGraph
 
 

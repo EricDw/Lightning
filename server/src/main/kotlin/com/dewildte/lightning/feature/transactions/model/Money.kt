@@ -4,6 +4,6 @@ class Money(
     val value: Int
 ) {
     init {
-        // TODO: Implement validation logic 
+        // TODO: Implement validation logic
     }
 }

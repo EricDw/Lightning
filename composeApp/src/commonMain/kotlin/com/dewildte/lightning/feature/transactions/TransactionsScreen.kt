@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dewildte.lightning.design.components.LargePanel
 import com.dewildte.lightning.feature.transactions.components.TransactionCard
+import com.dewildte.lightning.feature.transactions.model.Transaction
 import com.dewildte.lightning.feature.transactions.sample.sampleTransactonList
-import com.dewildte.lightning.feature.transactions.data.TransactionDTO
 import lightning.composeapp.generated.resources.Res
 import lightning.composeapp.generated.resources.message_loading_transactions
 import org.jetbrains.compose.resources.stringResource
@@ -25,7 +25,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TransactionsScreenController(
     viewModel: TransactionsScreenViewModel,
-    navigateToTransactionDetails: (transaction: TransactionDTO) -> Unit,
+    navigateToTransactionDetails: (transaction: Transaction) -> Unit,
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -49,8 +49,8 @@ fun TransactionsScreenController(
 fun TransactionsScreen(
     isLoading: Boolean = true,
     error: Throwable? = null,
-    transactions: List<TransactionDTO> = emptyList(),
-    onTransactionClick: (transaction: TransactionDTO) -> Unit = {},
+    transactions: List<Transaction> = emptyList(),
+    onTransactionClick: (transaction: Transaction) -> Unit = {},
 ) {
 
     LargePanel(
@@ -94,7 +94,7 @@ fun TransactionsScreen(
                         key = { it.id.value },
                     ) { transaction ->
                         TransactionCard(
-                            transaction,
+                            transaction = transaction,
                             onClick = { onTransactionClick(transaction) },
                         )
                     }
@@ -108,7 +108,7 @@ fun TransactionsScreen(
 data class TransactionsScreenState(
     val isLoading: Boolean = true,
     val error: Throwable? = null,
-    val transactions: List<TransactionDTO> = emptyList(),
+    val transactions: List<Transaction> = emptyList(),
 )
 
 @Preview

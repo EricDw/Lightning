@@ -1,34 +1,44 @@
 package com.dewildte.lightning.feature.transactions.sample
 
-import com.dewildte.lightning.feature.transactions.data.MoneyDTO
-import com.dewildte.lightning.feature.transactions.data.TransactionDTO
-import com.dewildte.lightning.feature.transactions.data.TransactionIdDTO
-import com.dewildte.lightning.feature.tags.data.TagDTO
+import com.dewildte.lightning.feature.tags.model.Tag
+import com.dewildte.lightning.feature.tags.model.TagId
+import com.dewildte.lightning.feature.tags.model.TagLabel
+import com.dewildte.lightning.feature.transactions.model.*
+import kotlinx.datetime.LocalDate
+import kotlin.uuid.Uuid
 
-val sampleNegativeTransaction = TransactionDTO(
-    id = TransactionIdDTO(value = "0"),
-    source = "VISA",
-    destination = "Big Box Store",
-    note = "Bought chairs",
-    money = MoneyDTO(value = -5),
+private val tagId1 = TagId(value = "0")
+
+val sampleNegativeTransaction = Transaction(
+    id = TransactionId(value = "0"),
+    source = Source(value = "VISA"),
+    destination = Destination(value = "Big Box Store"),
+    date = TransactionDate(
+        value = "2024-12-31"
+    ),
+    note = Note(value = "Bought chairs"),
+    money = Money(value = -5),
     tags = listOf(
-        TagDTO(
-            id = TransactionIdDTO("0"),
-            label = "Household"
+        Tag(
+            id = tagId1,
+            label = TagLabel(value = "Household")
         )
     )
 )
 
-val samplePositiveTransaction = TransactionDTO(
-    id = TransactionIdDTO(value = "1"),
-    source = "Big Box Store",
-    destination = "VISA",
-    note = "Returned chairs",
-    money = MoneyDTO(value = 5),
+val samplePositiveTransaction = Transaction(
+    id = TransactionId(value = "1"),
+    source = Source(value = "Big Box Store"),
+    destination = Destination(value = "VISA"),
+    date = TransactionDate(
+        value = "2025-1-1",
+    ),
+    note = Note(value = "Returned chairs"),
+    money = Money(value = 5),
     tags = listOf(
-        TagDTO(
-            id = TransactionIdDTO("0"),
-            label = "Household"
+        Tag(
+            id = tagId1,
+            label = TagLabel(value = "Household")
         )
     ),
 )

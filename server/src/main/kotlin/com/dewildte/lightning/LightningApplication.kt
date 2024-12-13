@@ -1,7 +1,7 @@
 package com.dewildte.lightning.application.api
 
 import com.dewildte.lightning.Platform
-import com.dewildte.lightning.feature.transactions.data.TransactionDTO
+import com.dewildte.lightning.feature.transactions.model.Transaction
 import kotlinx.coroutines.CompletableDeferred
 
 interface LightningApplication {
@@ -15,7 +15,7 @@ interface LightningApplication {
         ): Message()
 
         data class RetrieveTransactions(
-            val response: CompletableDeferred<List<TransactionDTO>> = CompletableDeferred()
+            val response: CompletableDeferred<List<Transaction>> = CompletableDeferred()
         ): Message()
     }
 }

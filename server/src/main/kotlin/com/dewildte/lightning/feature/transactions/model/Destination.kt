@@ -1,6 +1,6 @@
 package com.dewildte.lightning.feature.transactions.model
 
-class TransactionId(
+class Destination(
     val value: String
 ) {
     init {

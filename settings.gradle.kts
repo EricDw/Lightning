@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
+
 rootProject.name = "Lightning"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

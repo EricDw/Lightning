@@ -2,15 +2,19 @@ package com.dewildte.lightning.feature.transactions.data
 
 import com.dewildte.lightning.feature.tags.data.TagMapper
 import com.dewildte.lightning.feature.transactions.model.*
+import kotlinx.datetime.LocalDate
+import kotlin.uuid.Uuid
 
 class TransactionMapper {
+    val tagMapper = TagMapper()
+
     fun mapTransactionToTransactionDto(transaction: Transaction): TransactionDTO {
-        val tagMapper = TagMapper()
         return with(transaction) {
             TransactionDTO(
-                id = TransactionIdDTO(value = id.value),
+                id = TransactionIdDTO(value = id.value.toString()),
                 source = SourceDTO(value = source.value),
                 destination = DestinationDTO(destination.value),
+                date = TransactionDateDTO(value = date.value.toString()),
                 note = NoteDTO(note.value),
                 money = MoneyDTO(money.value),
                 tags = tags.map(tagMapper::mapTagToTagDto)
@@ -19,12 +23,12 @@ class TransactionMapper {
     }
 
     fun mapTransactionDtoToTransaction(dto: TransactionDTO): Transaction {
-        val tagMapper = TagMapper()
         return with(dto) {
             Transaction(
-                id = TransactionId(value = id.value),
+                id = TransactionId(value = Uuid.parse(id.value).toString()),
                 source = Source(value = source.value),
                 destination = Destination(destination.value),
+                date = TransactionDate(value = LocalDate.parse(date.value).toString()),
                 note = Note(note.value),
                 money = Money(money.value),
                 tags = tags.map(tagMapper::mapTagDtoToTag)

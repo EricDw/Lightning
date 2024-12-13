@@ -1,5 +1,8 @@
 package com.dewildte.lightning.feature.transactions.model
 
-class TagId(
+import androidx.compose.runtime.Immutable
+
+@Immutable
+data class Destination(
     val value: String
 )

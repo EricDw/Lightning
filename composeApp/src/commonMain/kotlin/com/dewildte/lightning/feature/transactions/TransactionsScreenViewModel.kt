@@ -23,7 +23,7 @@ class TransactionsScreenViewModel(
             val message = LightningApplication.Message.RetrieveTransactions()
 
             model.recieve(message)
-
+            
             try {
                 val transactions = message.response.await()
                 _state.update { oldState ->

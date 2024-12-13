@@ -1,8 +1,9 @@
 package com.dewildte.lightning.feature.tags.model
 
-import com.dewildte.lightning.feature.transactions.model.TagId
+import androidx.compose.runtime.Immutable
 
-class Tag(
+@Immutable
+data class Tag(
     val id: TagId,
     val label: TagLabel,
 )

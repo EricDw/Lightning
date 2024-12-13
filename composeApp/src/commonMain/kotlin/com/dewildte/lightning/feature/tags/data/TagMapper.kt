@@ -2,13 +2,14 @@ package com.dewildte.lightning.feature.tags.data
 
 import com.dewildte.lightning.feature.tags.model.Tag
 import com.dewildte.lightning.feature.tags.model.TagLabel
-import com.dewildte.lightning.feature.transactions.model.TagId
+import com.dewildte.lightning.feature.tags.model.TagId
+import kotlin.uuid.Uuid
 
 class TagMapper {
     fun mapTagToTagDto(tag: Tag): TagDTO {
         return with(tag) {
             TagDTO(
-                id = TagIdDTO(value = id.value),
+                id = TagIdDTO(value = id.value.toString()),
                 label = TagLabelDTO(value = label.value)
             )
         }
@@ -17,7 +18,7 @@ class TagMapper {
     fun mapTagDtoToTag(dto: TagDTO): Tag {
         return with(dto) {
             Tag(
-                id = TagId(value = dto.id.value),
+                id = TagId(value = Uuid.parse(dto.id.value).toString()),
                 label = TagLabel(value = dto.label.value)
             )
         }

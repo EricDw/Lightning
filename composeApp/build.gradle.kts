@@ -20,6 +20,12 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        // Uuid OptIn
+        optIn.add("kotlin.uuid.ExperimentalUuidApi")
+    }
+
     jvm("desktop")
 
     @OptIn(ExperimentalWasmDsl::class)
@@ -66,6 +72,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)

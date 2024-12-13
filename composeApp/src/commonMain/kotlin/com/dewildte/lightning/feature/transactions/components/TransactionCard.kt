@@ -9,14 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.dewildte.lightning.feature.transactions.model.Transaction
 import com.dewildte.lightning.feature.transactions.sample.sampleNegativeTransaction
 import com.dewildte.lightning.feature.transactions.sample.samplePositiveTransaction
-import com.dewildte.lightning.feature.transactions.data.TransactionDTO
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TransactionCard(
-    transaction: TransactionDTO,
+    transaction: Transaction,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {

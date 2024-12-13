@@ -14,6 +14,7 @@ androidx-lifecycle = "2.8.3"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 androidx-navigation = "2.8.0-alpha10"
+kotlinxDatetime = "0.6.1"
 kotlinxSerializationJson = "1.7.3"
 ktorClient = "2.3.12"
 material3-adaptive = "1.0.0-rc01"
@@ -47,6 +48,7 @@ androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", nam
 compose-material3-adaptive = { group = "org.jetbrains.compose.material3.adapative", name = "adaptive", version.ref = "material3-adaptive" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClient" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorClient" }

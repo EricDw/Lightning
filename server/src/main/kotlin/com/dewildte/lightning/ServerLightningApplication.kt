@@ -1,9 +1,8 @@
 package com.dewildte.lightning
 
 import com.dewildte.lightning.application.api.LightningApplication
-import com.dewildte.lightning.feature.transactions.InMemoryTransactionRepository
+import com.dewildte.lightning.feature.transactions.data.InMemoryTransactionRepository
 import com.dewildte.lightning.feature.transactions.data.TransactionRepository
-import kotlinx.coroutines.flow.StateFlow
 
 class ServerLightningApplication(
     private val transactionRepository: TransactionRepository = InMemoryTransactionRepository()
