@@ -12,6 +12,7 @@ The glossary is presented as a series of tables divided across a set of bounded 
 | DX   | Developer Experience               |
 | KMP  | Kotlin Multiplatform               |
 | JVM  | Java Virtual Machine               |
+| DTO  | Data Transfer Object               |
 
 ## Business
 
