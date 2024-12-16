@@ -1,6 +1,6 @@
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runDesktopComposeUiTest
-import com.dewildte.lightning.application.LightningApplication
+import com.dewildte.lightning.application.model.LightningApplication
 import kotlin.test.Test
 
 /**

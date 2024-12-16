@@ -2,7 +2,7 @@ package com.dewildte.lightning.feature.transactions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dewildte.lightning.application.LightningApplication
+import com.dewildte.lightning.application.model.LightningApplication
 import com.dewildte.lightning.feature.transactions.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

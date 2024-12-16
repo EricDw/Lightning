@@ -1,6 +1,6 @@
 package application.model
 
-import com.dewildte.lightning.application.LightningApplication
+import com.dewildte.lightning.application.model.LightningApplication
 import com.dewildte.lightning.getPlatform
 
 class TestLightningApplication : LightningApplication {

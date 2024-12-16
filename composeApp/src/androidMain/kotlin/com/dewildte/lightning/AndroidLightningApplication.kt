@@ -1,7 +1,7 @@
 package com.dewildte.lightning
 
 import android.app.Application
-import com.dewildte.lightning.application.LightningApplication
+import com.dewildte.lightning.application.model.LightningApplication
 import com.dewildte.lightning.feature.transactions.data.TransactionMapper
 import com.dewildte.lightning.network.FinanceApi
 

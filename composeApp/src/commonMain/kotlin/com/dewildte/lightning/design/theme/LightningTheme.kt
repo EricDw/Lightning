@@ -1,10 +1,9 @@
 package com.dewildte.lightning.design.theme
 
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Typography
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
 /**
  * <a href="https://material.io/design/material-theming/overview.html" class="external" target="_blank">Material Theming</a>.
@@ -32,19 +31,31 @@ import androidx.compose.runtime.Composable
  * @param colors A complete definition of the Material Color theme for this hierarchy
  * @param typography A set of text styles to be used as this hierarchy's typography system
  * @param shapes A set of shapes to be used by the components in this hierarchy
-
  */
 @Composable
 fun LightningTheme(
- colors: ColorScheme = MaterialTheme.colorScheme,
- typography: Typography = MaterialTheme.typography,
- shapes: Shapes = MaterialTheme.shapes,
+ darkTheme: Boolean = isSystemInDarkTheme(),
+ colors: ColorScheme? = null,
+ typography: Typography? = null,
+ shapes: Shapes? = null,
+ icons: Iconopgraphy? = null,
  content: @Composable () -> Unit,
 ) {
- MaterialTheme(
-  colorScheme = colors,
-  typography = typography,
-  shapes = shapes,
-  content = content,
- )
+
+ val colorScheme = colors ?: if (darkTheme) {
+  darkColorScheme()
+ } else {
+  lightColorScheme()
+ }
+
+ CompositionLocalProvider(
+  LocalIconopgraphy provides (icons ?: MaterialTheme.icons)
+ ) {
+  MaterialTheme(
+   colorScheme = colorScheme,
+   typography = typography ?: MaterialTheme.typography,
+   shapes = shapes ?: MaterialTheme.shapes,
+   content = content,
+  )
+ }
 }

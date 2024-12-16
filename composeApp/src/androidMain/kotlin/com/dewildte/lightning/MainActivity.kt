@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.dewildte.lightning.application.LightningApplicationController
-import com.dewildte.lightning.application.LightningApplication
+import com.dewildte.lightning.application.model.LightningApplication
 
 class MainActivity : ComponentActivity() {
 
