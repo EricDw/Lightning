@@ -1,8 +1,8 @@
 package com.dewildte.lightning.network
 
-import com.dewildte.lightning.feature.transactions.data.TransactionDTO
-import com.dewildte.lightning.feature.transactions.data.TransactionIdDTO
-import com.dewildte.lightning.feature.transactions.model.Transaction
+import com.dewildte.lightning.dtos.transactions.data.TransactionDTO
+import com.dewildte.lightning.dtos.transactions.data.TransactionIdDTO
+import com.dewildte.lightning.models.transactions.Transaction
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*

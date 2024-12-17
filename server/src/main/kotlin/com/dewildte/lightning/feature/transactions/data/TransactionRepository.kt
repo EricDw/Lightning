@@ -1,7 +1,7 @@
-package com.dewildte.lightning.feature.transactions.data
+package com.dewildte.lightning.dtos.transactions.data
 
-import com.dewildte.lightning.feature.transactions.model.Transaction
-import com.dewildte.lightning.feature.transactions.model.TransactionId
+import com.dewildte.lightning.models.transactions.Transaction
+import com.dewildte.lightning.models.transactions.TransactionId
 
 interface TransactionRepository  {
     suspend fun retrieveAllTransactions() : List<Transaction>

@@ -6,20 +6,20 @@ import io.ktor.server.engine.*
 import java.io.File
 
 fun ApplicationEngine.Configuration.envConfig() {
-    val appPassword = "lightning app mot de passe"
-    val privateAppPassword = "lightning app mot de passe"
-    val keystoreFileName = "keystore.jks"
+    val keystorePassword = "lightning-keystore-mot-de-passe"
+    val privateKeyPassword = "lightning-key-mot-de-passe"
+    val keystoreFileName = "lightningKeystore.jks"
     val certificateAlias = "lightningAlias"
     val keyStoreFile = File("build/$keystoreFileName")
     val keyStore = buildKeyStore {
         certificate(certificateAlias) {
-            password = privateAppPassword
+            password = privateKeyPassword
             domains = listOf(LOCAL_HOST, "0.0.0.0", "localhost")
         }
     }
     keyStore.saveToFile(
         output = keyStoreFile,
-        password = appPassword
+        password = keystorePassword
     )
 
     connector {
@@ -29,8 +29,8 @@ fun ApplicationEngine.Configuration.envConfig() {
     sslConnector(
         keyStore = keyStore,
         keyAlias = certificateAlias,
-        keyStorePassword = { appPassword.toCharArray() },
-        privateKeyPassword = { privateAppPassword.toCharArray() }) {
+        keyStorePassword = { keystorePassword.toCharArray() },
+        privateKeyPassword = { privateKeyPassword.toCharArray() }) {
         host = LOCAL_HOST
         port = 8443
         keyStorePath = keyStoreFile

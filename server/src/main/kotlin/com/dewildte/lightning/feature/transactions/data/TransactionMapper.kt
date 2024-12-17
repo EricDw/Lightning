@@ -1,7 +1,8 @@
 package com.dewildte.lightning.feature.transactions.data
 
+import com.dewildte.lightning.dtos.transactions.data.*
 import com.dewildte.lightning.feature.tags.data.TagMapper
-import com.dewildte.lightning.feature.transactions.model.*
+import com.dewildte.lightning.models.transactions.*
 import kotlinx.datetime.LocalDate
 import kotlin.uuid.Uuid
 

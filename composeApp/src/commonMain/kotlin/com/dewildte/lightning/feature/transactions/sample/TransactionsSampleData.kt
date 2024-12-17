@@ -1,13 +1,12 @@
 package com.dewildte.lightning.feature.transactions.sample
 
-import com.dewildte.lightning.feature.tags.model.Tag
-import com.dewildte.lightning.feature.tags.model.TagId
-import com.dewildte.lightning.feature.tags.model.TagLabel
-import com.dewildte.lightning.feature.transactions.model.*
+import com.dewildte.lightning.models.tags.Tag
+import com.dewildte.lightning.models.tags.TagId
+import com.dewildte.lightning.models.tags.TagLabel
+import com.dewildte.lightning.models.transactions.*
 import kotlinx.datetime.LocalDate
-import kotlin.uuid.Uuid
 
-private fun tagId1(): TagId {
+fun tagId1(): TagId {
     return TagId(value ="550e8400-e29b-41d4-a716-446655440000")
 }
 

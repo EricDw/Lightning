@@ -7,7 +7,7 @@ plugins {
 group = "com.dewildte.lightning"
 version = "1.0.0"
 application {
-    mainClass.set("com.dewildte.lightning.ApplicationKt")
+    mainClass.set("com.dewildte.lightning.KtorApplicationKt")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
 }
 
@@ -25,6 +25,10 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.content.negotiation.jvm)
     implementation(libs.ktor.serialization.kotlinx.json.jvm)
+    implementation(libs.ktor.server.openapi)
+    implementation(libs.swagger.codegen.generators)
+    implementation(libs.ktor.server.swagger)
+    implementation(libs.ktor.server.cors)
     implementation(libs.kotlinx.datetime)
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)

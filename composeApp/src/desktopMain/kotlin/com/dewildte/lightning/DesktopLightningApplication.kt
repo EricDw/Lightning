@@ -13,10 +13,6 @@ class DesktopLightningApplication(
 
     override suspend fun recieve(message: LightningApplication.Message) {
         when (message) {
-            is LightningApplication.Message.GetPlatform -> {
-                val platform = getPlatform()
-                message.response.complete(platform)
-            }
 
             is LightningApplication.Message.RetrieveTransactions -> {
                 try {
