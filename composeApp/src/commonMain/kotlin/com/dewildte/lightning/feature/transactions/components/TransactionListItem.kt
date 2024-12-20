@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.dewildte.lightning.feature.transactions.model.Transaction
+import com.dewildte.lightning.models.transactions.Transaction
 import com.dewildte.lightning.feature.transactions.sample.sampleNegativeTransaction
 import com.dewildte.lightning.feature.transactions.sample.samplePositiveTransaction
 import org.jetbrains.compose.ui.tooling.preview.Preview

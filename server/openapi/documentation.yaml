@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Lightning Finance API
+  description: An API that helps people manage their personal and family finances.
+
+servers:
+  - url: http://192.168.2.26:8080
+
+# Basic authentication
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+security:
+  - BasicAuth: []
+
+paths:
+  /finance/transactions:
+    get:
+      description: Returns a list of transactions
+      responses:
+        '200':
+          description: Successful returned a list of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - source
+                    - destination
+                    - date
+                    - note
+                    - money
+                    - tags
+                  properties:
+                    id:
+                      type: object
+                    source:
+                      type: object
+                    destination:
+                      type: object
+                    date:
+                      type: object
+                    note:
+                      type: object
+                    money:
+                      type: object
+                    tags:
+                      type: array
+                      items:
+                        type: object

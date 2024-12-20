@@ -1,17 +1,18 @@
 package application.model
 
 import com.dewildte.lightning.application.model.LightningApplication
-import com.dewildte.lightning.getPlatform
+import com.dewildte.lightning.models.users.User
+import com.dewildte.lightning.models.users.UserId
+import kotlin.uuid.Uuid
 
 class TestLightningApplication : LightningApplication {
     override suspend fun recieve(message: LightningApplication.Message) {
         when (message) {
-            is LightningApplication.Message.GetPlatform -> {
-                val platform = getPlatform()
-                message.response.complete(platform)
+            is LightningApplication.Message.LoginWithEmailAndPassword -> {
+                message.response.complete(User(id = UserId(Uuid.random().toString())))
             }
-            else -> {
-                TODO("Not yet implemented")
+            is LightningApplication.Message.RetrieveTransactions -> {
+                TODO()
             }
         }
     }

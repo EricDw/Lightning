@@ -25,7 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.dewildte.lightning.design.components.LargePanel
 import com.dewildte.lightning.feature.transactions.components.TransactionListItem
-import com.dewildte.lightning.feature.transactions.model.Transaction
+import com.dewildte.lightning.models.transactions.Transaction
 import com.dewildte.lightning.feature.transactions.sample.sampleTransactonList
 import lightning.composeapp.generated.resources.Res
 import lightning.composeapp.generated.resources.message_loading_transactions

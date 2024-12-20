@@ -1,14 +1,14 @@
 {
     "configurations": [
         {
-            "name": "TheDesktopApplication",
+            "name": "TheUser",
             "type": "gradle",
             "workingDir": "$PROJECT_DIR$",
             "tasks": [
                 ":composeApp:clean",
                 ":composeApp:desktopTest",
                 "--tests",
-                "\"TheDesktopApplication\""
+                "\"TheUser\""
             ],
             "args": [
                 ""

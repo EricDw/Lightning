@@ -1,11 +1,11 @@
 package com.dewildte.lightning.feature.transactions.data
 
-import com.dewildte.lightning.feature.tags.model.Tag
-import com.dewildte.lightning.feature.tags.model.TagId
-import com.dewildte.lightning.feature.tags.model.TagLabel
-import com.dewildte.lightning.feature.transactions.model.*
+import com.dewildte.lightning.feature.transactions.model.TransactionRepository
+import com.dewildte.lightning.models.tags.Tag
+import com.dewildte.lightning.models.tags.TagId
+import com.dewildte.lightning.models.tags.TagLabel
+import com.dewildte.lightning.models.transactions.*
 import kotlinx.datetime.LocalDate
-import kotlin.uuid.Uuid
 
 class InMemoryTransactionRepository : TransactionRepository {
 

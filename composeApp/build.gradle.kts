@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -18,12 +19,15 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         // Uuid OptIn
         optIn.add("kotlin.uuid.ExperimentalUuidApi")
+        optIn.add("androidx.compose.ui.test.ExperimentalTestApi")
     }
 
     jvm("desktop")
@@ -56,6 +60,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -78,10 +83,17 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(projects.shared)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.cio)
+        }
+
+        val androidInstrumentedTest by getting
+
+        androidInstrumentedTest.dependencies {
+
         }
 
         val desktopTest by getting
@@ -112,6 +124,8 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     packaging {
         resources {
@@ -126,6 +140,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    dependencies {
+        androidTestImplementation(libs.androidx.ui.test.junit4.android)
+        debugImplementation(libs.androidx.ui.test.manifest)
     }
 }
 

@@ -1,12 +1,27 @@
 <resources>
+    <!-- Titles -->
     <string name="title_app_name">Lightning</string>
+
+    <!-- Labels -->
     <string name="label_home">Home</string>
-    <string name="label_transactions">Transactions</string>
+    <string name="label_email">Email</string>
+    <string name="label_login">Login</string>
+    <string name="label_password">Password</string>
     <string name="label_settings">Settings</string>
+    <string name="label_transactions">Transactions</string>
+
+    <!-- Messages -->
     <string name="message_loading">Loading</string>
     <string name="message_loading_transactions">Loading transactions</string>
+
+    <!-- Descriptions -->
     <string name="description_home_icon">Home</string>
+    <string name="description_clear_icon">Clear</string>
+    <string name="description_email_icon">Email</string>
+    <string name="description_password_icon">Password</string>
     <string name="description_app_icon">Lightning Bolt</string>
     <string name="description_drawer_icon">Navigation drawer</string>
+    <string name="description_hide_password_icon">Hide Password</string>
     <string name="description_transactions_icon">Transaction list</string>
+    <string name="description_reveal_password_icon">Reveal Password</string>
 </resources>

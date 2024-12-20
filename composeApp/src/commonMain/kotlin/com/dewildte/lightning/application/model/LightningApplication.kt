@@ -1,8 +1,7 @@
 package com.dewildte.lightning.application.model
 
-import androidx.compose.runtime.Immutable
-import com.dewildte.lightning.Platform
-import com.dewildte.lightning.feature.transactions.model.Transaction
+import com.dewildte.lightning.models.transactions.Transaction
+import com.dewildte.lightning.models.users.User
 import kotlinx.coroutines.CompletableDeferred
 
 interface LightningApplication {
@@ -11,12 +10,14 @@ interface LightningApplication {
 
     sealed class Message {
 
-        data class GetPlatform(
-            val response: CompletableDeferred<Platform> = CompletableDeferred()
-        ): Message()
-
         data class RetrieveTransactions(
             val response: CompletableDeferred<List<Transaction>> = CompletableDeferred()
+        ): Message()
+
+        data class LoginWithEmailAndPassword(
+            val email: String,
+            val password: String,
+            val response: CompletableDeferred<User> = CompletableDeferred()
         ): Message()
     }
 }

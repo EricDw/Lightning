@@ -2,12 +2,21 @@ package com.dewildte.lightning
 
 import android.app.Application
 import com.dewildte.lightning.application.model.LightningApplication
-import com.dewildte.lightning.feature.transactions.data.TransactionMapper
+import com.dewildte.lightning.network.TransactionMapper
 import com.dewildte.lightning.network.FinanceApi
+import com.dewildte.lightning.network.buildHttpClient
 
 class AndroidLightningApplication : Application(), LightningApplication {
 
-    private val financeApi by lazy { FinanceApi() }
+    private val httpClient by lazy {
+        buildHttpClient()
+    }
+
+    private val financeApi by lazy {
+        FinanceApi(
+            httpClient = httpClient
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -15,11 +24,6 @@ class AndroidLightningApplication : Application(), LightningApplication {
 
     override suspend fun recieve(message: LightningApplication.Message) {
         when (message) {
-            is LightningApplication.Message.GetPlatform -> {
-                val platform = getPlatform()
-                message.response.complete(platform)
-            }
-
             is LightningApplication.Message.RetrieveTransactions -> {
                 try {
                     val mapper = TransactionMapper()
@@ -30,6 +34,8 @@ class AndroidLightningApplication : Application(), LightningApplication {
                     message.response.completeExceptionally(error)
                 }
             }
+
+            is LightningApplication.Message.LoginWithEmailAndPassword -> TODO()
         }
     }
 }
