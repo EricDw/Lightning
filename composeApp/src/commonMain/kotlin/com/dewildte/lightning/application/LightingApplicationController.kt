@@ -1,5 +1,6 @@
 package com.dewildte.lightning.application
 
+import HomeRoute
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
@@ -8,7 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.dewildte.lightning.application.components.LightningScaffold
+import com.dewildte.lightning.design.components.LightningScaffold
 import com.dewildte.lightning.application.model.LightningApplication
 import com.dewildte.lightning.design.theme.LightningTheme
 import com.dewildte.lightning.feature.onboarding.OnboardingRoute
@@ -16,6 +17,7 @@ import com.dewildte.lightning.feature.onboarding.onboardingNavigationGraph
 import com.dewildte.lightning.feature.transactions.TransactionsRoute
 import com.dewildte.lightning.feature.transactions.transactionsGraph
 import com.dewildte.lightning.models.users.User
+import homeNavigationGraph
 
 @Composable
 fun LightningApplicationController(
@@ -32,8 +34,14 @@ fun LightningApplicationController(
 
     val navController = rememberNavController()
 
-    var selectedDestination by remember {
-        mutableStateOf<AppDestination?>(null)
+    var selectedDestination by remember(state.user) {
+        val destination = if (state.user == null) {
+            null
+        } else {
+            AppDestination.TRANSACTIONS
+        }
+
+        mutableStateOf(destination)
     }
 
     val startDestination: Any = if (state.user == null) {
@@ -41,6 +49,7 @@ fun LightningApplicationController(
     } else {
         TransactionsRoute
     }
+
 
     LightningTheme(
         darkTheme = isSystemInDarkTheme()
@@ -50,7 +59,8 @@ fun LightningApplicationController(
             onDestinationClick = { destination ->
                 when (destination) {
                     AppDestination.HOME -> {
-                        // TODO: Implement
+                        selectedDestination = destination
+                        navController.navigate(route = HomeRoute)
                     }
 
                     AppDestination.TRANSACTIONS -> {
@@ -72,12 +82,13 @@ fun LightningApplicationController(
                 onboardingNavigationGraph(
                     model = model,
                     navigateToHome = {
-                        // TODO: Set up, and navigate to, the actual home screen.
                         selectedDestination = AppDestination.HOME
-                        navController.navigate(route = TransactionsRoute)
+                        navController.navigate(route = HomeRoute)
                     },
                 )
-                // TODO: Home Graph
+
+                homeNavigationGraph(model = model)
+
                 transactionsGraph(model = model)
                 // TODO: Settings Graph
             }

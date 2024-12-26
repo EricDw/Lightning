@@ -1,4 +1,4 @@
-package com.dewildte.lightning.feature.transactions.components
+package com.dewildte.lightning.design.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward

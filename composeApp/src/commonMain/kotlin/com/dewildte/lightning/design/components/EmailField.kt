@@ -7,9 +7,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import lightning.composeapp.generated.resources.Res
+import lightning.composeapp.generated.resources.description_email_field
+import lightning.composeapp.generated.resources.description_email_icon
 import lightning.composeapp.generated.resources.label_email
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -18,12 +22,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun EmailField(
     value: String = "",
     supportingText: String = "",
+    isError: Boolean = false,
     modifier: Modifier = Modifier,
     onValueChange: (newValue: String) -> Unit = { /* no-op */ },
 ) {
+    val description = stringResource(Res.string.description_email_field)
+    val rootModifier = modifier.semantics {
+        contentDescription = description
+    }
     OutlinedTextField(
-        modifier = modifier,
+        modifier = rootModifier,
         value = value,
+        isError = isError,
+        singleLine = true,
         onValueChange = onValueChange,
         label = {
             val text = stringResource(Res.string.label_email)

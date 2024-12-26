@@ -17,7 +17,6 @@ interface LightningApplication {
 
         data class LoginUserWithEmailAndPassword(
             val email: EmailAddress,
-            val password: Password,
             val response: CompletableDeferred<User> = CompletableDeferred()
         ): Message()
     }

@@ -12,16 +12,21 @@
 
     <!-- Messages -->
     <string name="message_loading">Loading</string>
+    <string name="message_select_transaction">Select a Transaction</string>
     <string name="message_loading_transactions">Loading transactions</string>
+    <string name="message_unknown_error">😮 Unknown error caused by:\n%1$s</string>
+    <string name="message_invalid_credentials">Invalid credentials, please try again.</string>
 
     <!-- Descriptions -->
     <string name="description_home_icon">Home</string>
     <string name="description_clear_icon">Clear</string>
     <string name="description_email_icon">Email</string>
+    <string name="description_settings_icon">Settings</string>
+    <string name="description_email_field">Email Field</string>
     <string name="description_password_icon">Password</string>
     <string name="description_app_icon">Lightning Bolt</string>
     <string name="description_drawer_icon">Navigation drawer</string>
     <string name="description_hide_password_icon">Hide Password</string>
-    <string name="description_transactions_icon">Transaction list</string>
+    <string name="description_transactions_icon">Transactions</string>
     <string name="description_reveal_password_icon">Reveal Password</string>
 </resources>

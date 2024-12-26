@@ -1,14 +1,14 @@
 {
     "configurations": [
         {
-            "name": "TheUser",
+            "name": "DesktopUserJourneys",
             "type": "gradle",
             "workingDir": "$PROJECT_DIR$",
             "tasks": [
                 ":composeApp:clean",
                 ":composeApp:desktopTest",
                 "--tests",
-                "\"TheUser\""
+                "\"TheDesktopUser\""
             ],
             "args": [
                 ""
@@ -16,6 +16,38 @@
             "initScripts": {
                 "flmapper": "ext.mapPath = { path -> path }"
             }
-        }
+        },
+        {
+            "name": "AndroidUserJourneys",
+            "type": "gradle",
+            "workingDir": "$PROJECT_DIR$",
+            "tasks": [
+                ":composeApp:clean",
+                ":composeApp:connectedAndroidTest",
+            ],
+            "args": [
+                ""
+            ],
+            "initScripts": {
+                "flmapper": "ext.mapPath = { path -> path }"
+            }
+        },
+        {
+            "name": "DesktopComponentSpecifications",
+            "type": "gradle",
+            "workingDir": "$PROJECT_DIR$",
+            "tasks": [
+                ":composeApp:clean",
+                ":composeApp:desktopTest",
+                "--tests",
+                "design.components.*",
+            ],
+            "args": [
+                ""
+            ],
+            "initScripts": {
+                "flmapper": "ext.mapPath = { path -> path }"
+            }
+        },
     ]
 }

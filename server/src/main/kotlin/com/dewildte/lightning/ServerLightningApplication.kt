@@ -24,14 +24,12 @@ class ServerLightningApplication(
             }
 
             is Message.LoginUserWithEmailAndPassword -> {
-
+                // TODO: Load from database
                 val email = message.email
-                val password = message.password
 
                 try {
 
                     check(email.value == "dewildte@gmail.com")
-                    check(password.value == "Secure-Pass-Phrase-00!")
 
                     val id = "550e8400-e29b-41d4-a716-446655440000"
                     val userId = UserId(

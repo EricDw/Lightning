@@ -1,6 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -27,30 +26,10 @@ kotlin {
     compilerOptions {
         // Uuid OptIn
         optIn.add("kotlin.uuid.ExperimentalUuidApi")
-        optIn.add("androidx.compose.ui.test.ExperimentalTestApi")
+        optIn.add("androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi")
     }
 
     jvm("desktop")
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
-                }
-            }
-        }
-        binaries.executable()
-    }
 
     sourceSets {
         val desktopMain by getting
@@ -76,9 +55,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.compose)
+            implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.auth)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
             implementation(projects.shared)
@@ -93,7 +74,11 @@ kotlin {
         val androidInstrumentedTest by getting
 
         androidInstrumentedTest.dependencies {
-
+            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+            compilerOptions {
+                // Experimental Test OptIn
+                optIn.add("androidx.compose.ui.test.ExperimentalTestApi")
+            }
         }
 
         val desktopTest by getting
@@ -104,6 +89,12 @@ kotlin {
 
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
+
+            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+            compilerOptions {
+                // Experimental Test OptIn
+                optIn.add("androidx.compose.ui.test.ExperimentalTestApi")
+            }
         }
 
         // Adds the desktop test dependency

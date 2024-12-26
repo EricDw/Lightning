@@ -2,6 +2,8 @@ package com.dewildte.lightning
 
 import android.app.Application
 import com.dewildte.lightning.application.model.LightningApplication
+import com.dewildte.lightning.models.users.User
+import com.dewildte.lightning.models.users.UserId
 import com.dewildte.lightning.network.TransactionMapper
 import com.dewildte.lightning.network.FinanceApi
 import com.dewildte.lightning.network.buildHttpClient
@@ -35,7 +37,12 @@ class AndroidLightningApplication : Application(), LightningApplication {
                 }
             }
 
-            is LightningApplication.Message.LoginWithEmailAndPassword -> TODO()
+            is LightningApplication.Message.LoginWithEmailAndPassword -> {
+                val user = User(
+                    id = UserId(value = "randomUserId")
+                )
+                message.response.complete(user)
+            }
         }
     }
 }

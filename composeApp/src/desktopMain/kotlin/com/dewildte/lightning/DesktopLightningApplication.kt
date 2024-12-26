@@ -2,19 +2,33 @@ package com.dewildte.lightning
 
 import androidx.compose.ui.window.ApplicationScope
 import com.dewildte.lightning.application.model.LightningApplication
+import com.dewildte.lightning.models.users.User
+import com.dewildte.lightning.models.users.UserId
 import com.dewildte.lightning.network.FinanceApi
+import com.dewildte.lightning.network.OnboardingApi
 import com.dewildte.lightning.network.TransactionMapper
 import com.dewildte.lightning.network.buildHttpClient
 
 class DesktopLightningApplication(
     applicationScope: ApplicationScope
 ) : ApplicationScope by applicationScope, LightningApplication {
+
+    private var currentUsername: String = ""
+    private var currentPassword = ""
+    private var currentUser: User? = null
+
     private val httpClient by lazy {
         buildHttpClient()
     }
 
     private val financeApi by lazy {
         FinanceApi(
+            httpClient = httpClient
+        )
+    }
+
+    private val onboardingApi by lazy {
+        OnboardingApi(
             httpClient = httpClient
         )
     }
@@ -34,7 +48,27 @@ class DesktopLightningApplication(
             }
 
             is LightningApplication.Message.LoginWithEmailAndPassword -> {
-                TODO()
+                println("Received: $message")
+                currentUser?.let { user ->
+                    message.response.complete(user)
+                    return
+                }
+
+                try {
+
+                    val user = onboardingApi.login(
+                        username = message.email,
+                        password = message.password,
+                    )
+
+                    currentUser = user
+                    currentUsername = message.email
+                    currentPassword = message.password
+
+                    message.response.complete(user)
+                } catch (e: Throwable) {
+                    message.response.completeExceptionally(e)
+                }
             }
         }
     }

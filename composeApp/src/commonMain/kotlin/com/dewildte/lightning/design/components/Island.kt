@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LargePanel(
+fun LargeIsland(
     modifier: Modifier = Modifier,
     abovePanelContent: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit,

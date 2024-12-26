@@ -59,7 +59,7 @@ class LoginScreenViewModel(
             } catch (e: Throwable) {
                 _state.update { oldState ->
                     oldState.copy(
-                        error = e.message
+                        error = LoginError.Unknown(cause = e.message ?: "null")
                     )
                 }
             }

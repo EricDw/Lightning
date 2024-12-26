@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.content.negotiation.jvm)
     implementation(libs.ktor.serialization.kotlinx.json.jvm)
+    implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.openapi)
     implementation(libs.swagger.codegen.generators)
     implementation(libs.ktor.server.swagger)

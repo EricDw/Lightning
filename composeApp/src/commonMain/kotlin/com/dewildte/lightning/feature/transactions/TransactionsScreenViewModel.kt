@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dewildte.lightning.application.model.LightningApplication
 import com.dewildte.lightning.models.transactions.Transaction
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +34,8 @@ class TransactionsScreenViewModel(
                     .sortedBy {
                         it.date.value
                     }
+                    .toPersistentList()
+
                 _state.update { oldState ->
                     oldState.copy(
                         isLoading = false,
@@ -74,11 +78,11 @@ class TransactionsScreenViewModel(
         _state.update { oldState ->
             val searchedTransactions = oldState.transactions.filter {
                 it.source.value.contains(searchTerm, ignoreCase = true) ||
-                it.destination.value.contains(searchTerm, ignoreCase = true) ||
-                it.note.value.contains(searchTerm, ignoreCase = true) ||
-                it.date.value.toString().contains(searchTerm, ignoreCase = true) ||
-                it.money.value.toDouble().toString().contains(searchTerm)
-            }
+                        it.destination.value.contains(searchTerm, ignoreCase = true) ||
+                        it.note.value.contains(searchTerm, ignoreCase = true) ||
+                        it.date.value.toString().contains(searchTerm, ignoreCase = true) ||
+                        it.money.value.toDouble().toString().contains(searchTerm)
+            }.toPersistentList()
 
             oldState.copy(
                 searchedTransactions = searchedTransactions
@@ -90,7 +94,7 @@ class TransactionsScreenViewModel(
         // TODO: Cancel the current search Request
         _state.update { oldState ->
             oldState.copy(
-                searchedTransactions = listOf()
+                searchedTransactions = persistentListOf()
             )
         }
 

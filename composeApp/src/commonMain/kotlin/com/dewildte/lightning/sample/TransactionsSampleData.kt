@@ -4,6 +4,8 @@ import com.dewildte.lightning.models.tags.Tag
 import com.dewildte.lightning.models.tags.TagId
 import com.dewildte.lightning.models.tags.TagLabel
 import com.dewildte.lightning.models.transactions.*
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.datetime.LocalDate
 
 fun tagId1(): TagId {
@@ -56,8 +58,8 @@ fun samplePositiveTransaction(): Transaction {
     )
 }
 
-fun sampleTransactonList(): List<Transaction> {
-    return listOf(
+fun sampleTransactonList(): ImmutableList<Transaction> {
+    return persistentListOf(
         sampleNegativeTransaction(),
         samplePositiveTransaction(),
     )

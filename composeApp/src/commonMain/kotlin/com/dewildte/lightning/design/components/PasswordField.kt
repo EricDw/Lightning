@@ -26,6 +26,7 @@ fun PasswordField(
     value: String,
     modifier: Modifier = Modifier,
     supportingText: String = "",
+    isError: Boolean = false,
     revealed: Boolean = false,
     onValueChange: (newValue: String) -> Unit = { /* no-op */ },
     onRevealPasswordClick: () -> Unit = { /* no-op */ },
@@ -72,6 +73,8 @@ fun PasswordField(
 
     OutlinedTextField(
         value = value,
+        isError = isError,
+        singleLine = true,
         onValueChange = onValueChange,
         modifier = modifier,
         label = {

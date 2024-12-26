@@ -1,9 +1,6 @@
 package com.dewildte.lightning.feature.transactions
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -14,21 +11,23 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.dewildte.lightning.design.components.LargePanel
-import com.dewildte.lightning.feature.transactions.components.TransactionListItem
-import com.dewildte.lightning.models.transactions.Transaction
+import com.dewildte.lightning.design.components.LargeIsland
+import com.dewildte.lightning.design.components.TransactionList
+import com.dewildte.lightning.design.components.TwoPaneLayout
 import com.dewildte.lightning.feature.transactions.sample.sampleTransactonList
+import com.dewildte.lightning.models.transactions.Transaction
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import lightning.composeapp.generated.resources.Res
 import lightning.composeapp.generated.resources.message_loading_transactions
+import lightning.composeapp.generated.resources.message_select_transaction
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -119,8 +118,8 @@ fun TransactionsScreen(
     error: Throwable? = null,
     searchTerm: String = "",
     expandSearchBar: Boolean = false,
-    transactions: List<Transaction> = emptyList(),
-    searchedTransactions: List<Transaction> = emptyList(),
+    transactions: ImmutableList<Transaction> = persistentListOf(),
+    searchedTransactions: ImmutableList<Transaction> = persistentListOf(),
     selectedTransaction: Transaction? = null,
     onSerchTermChange: (newSearchTerm: String) -> Unit = {},
     onTransactionClick: (transaction: Transaction) -> Unit = {},
@@ -128,11 +127,12 @@ fun TransactionsScreen(
     onCloseSearchClick: () -> Unit = {},
     onClearSearchTermClick: () -> Unit = {},
 ) {
-    TransactionScreenLayout(
+    TwoPaneLayout(
+        modifier = Modifier.padding(16.dp),
         twoPane = twoPane,
-        showDetails = selectedTransaction != null,
-        listContent = {
-            LargePanel(
+        showSecondaryContent = selectedTransaction != null,
+        primaryContent = {
+            LargeIsland(
                 modifier = Modifier
                     .fillMaxHeight(),
                 abovePanelContent = {
@@ -176,6 +176,7 @@ fun TransactionsScreen(
 
                     else -> {
                         TransactionList(
+                            modifier = Modifier.fillMaxSize().padding(8.dp),
                             transactions = transactions,
                             clipItems = true,
                             selectedTransaction = selectedTransaction,
@@ -186,8 +187,8 @@ fun TransactionsScreen(
             }
 
         },
-        detailsContent = {
-            LargePanel(
+        secondaryContent = {
+            LargeIsland(
                 modifier = Modifier
                     .fillMaxHeight(),
             ) {
@@ -211,7 +212,7 @@ fun TransactionsScreen(
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                text = "Select a Transaction",
+                                text = stringResource(Res.string.message_select_transaction),
                                 modifier = Modifier.padding(16.dp),
                                 style = MaterialTheme.typography.titleLarge,
                             )
@@ -223,47 +224,12 @@ fun TransactionsScreen(
     )
 }
 
-@Composable
-private fun TransactionScreenLayout(
-    twoPane: Boolean,
-    showDetails: Boolean,
-    listContent: @Composable () -> Unit,
-    detailsContent: @Composable () -> Unit,
-) {
-    if (twoPane) {
-        Row(
-            Modifier.padding(16.dp)
-        ) {
-            Box(modifier = Modifier.weight(0.5F)) {
-                listContent()
-            }
-            Spacer(modifier = Modifier.width(width = 16.dp))
-            Box(
-                modifier = Modifier.weight(0.5F)
-            ) {
-                detailsContent()
-            }
-        }
-    } else {
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            if (showDetails) {
-                detailsContent()
-            } else {
-                listContent()
-            }
-        }
-    }
-
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TransactionSearchBar(
     searchTerm: String,
     expanded: Boolean,
-    transactions: List<Transaction>,
+    transactions: ImmutableList<Transaction>,
     selectedTransaction: Transaction?,
     onTransactionClick: (transaction: Transaction) -> Unit,
     onSearchTermChange: (newSearchTerm: String) -> Unit,
@@ -321,16 +287,6 @@ private fun TransactionSearchBar(
                             }
                             TransformedText(hint, offsetMapping = offsetMapping)
                         } else {
-                            val offsetMapping = object : OffsetMapping {
-                                override fun originalToTransformed(offset: Int): Int {
-                                    return annotatedString.length
-                                }
-
-                                override fun transformedToOriginal(offset: Int): Int {
-                                    return annotatedString.length
-                                }
-
-                            }
                             TransformedText(annotatedString, OffsetMapping.Identity)
                         }
                     },
@@ -356,6 +312,7 @@ private fun TransactionSearchBar(
             )
     ) {
         TransactionList(
+            modifier = Modifier.fillMaxSize().padding(8.dp),
             transactions = transactions,
             clipItems = false,
             selectedTransaction = selectedTransaction,
@@ -363,42 +320,6 @@ private fun TransactionSearchBar(
         )
     }
 
-}
-
-@Composable
-private fun TransactionList(
-    transactions: List<Transaction>,
-    clipItems: Boolean,
-    selectedTransaction: Transaction?,
-    onTransactionClick: (transaction: Transaction) -> Unit,
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        items(
-            items = transactions,
-            key = { it.id.value },
-        ) { transaction ->
-            val itemDrawModifier = Modifier
-                .let {
-                    if (clipItems) {
-                        it.clip(MaterialTheme.shapes.medium)
-                    } else it
-                }
-                .clickable(
-                    onClick = { onTransactionClick(transaction) },
-                    onClickLabel = null,
-                    role = Role.Button,
-                )
-            TransactionListItem(
-                transaction = transaction,
-                selected = transaction == selectedTransaction,
-                modifier = itemDrawModifier,
-            )
-        }
-    }
 }
 
 @Composable
@@ -423,8 +344,8 @@ data class TransactionsScreenState(
     val error: Throwable? = null,
     val searchTerm: String = "",
     val selectedTransaction: Transaction? = null,
-    val transactions: List<Transaction> = emptyList(),
-    val searchedTransactions: List<Transaction> = emptyList(),
+    val transactions: ImmutableList<Transaction> = persistentListOf(),
+    val searchedTransactions: ImmutableList<Transaction> = persistentListOf(),
 )
 
 @Preview

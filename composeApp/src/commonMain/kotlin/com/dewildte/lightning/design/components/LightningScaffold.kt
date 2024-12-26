@@ -1,11 +1,17 @@
-package com.dewildte.lightning.application.components
+package com.dewildte.lightning.design.components
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.dewildte.lightning.application.AppDestination
@@ -15,6 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LightningScaffold(
+    modifier: Modifier = Modifier,
     selectedDestination: AppDestination? = null,
     onDestinationClick: (destination: AppDestination) -> Unit = {},
     content: @Composable () -> Unit = {}
@@ -45,17 +52,27 @@ fun LightningScaffold(
         }
 
         else -> {
-            NavigationSuiteType.NavigationDrawer
-
+            NavigationSuiteType.NavigationRail
         }
     }
 
     NavigationSuiteScaffold(
+        modifier = modifier,
         layoutType = layoutType,
         navigationSuiteItems = {
             AppDestination.entries.forEach { destination ->
+                val itemModifier = when (layoutType) {
+
+                    NavigationSuiteType.NavigationRail -> {
+                        Modifier.padding(start = 12.dp)
+                    }
+
+                    else -> {
+                        Modifier.Companion
+                    }
+                }
                 item(
-                    alwaysShowLabel = false,
+                    modifier = itemModifier,
                     selected = destination == selectedDestination,
                     onClick = { onDestinationClick(destination) },
                     icon = {
@@ -83,7 +100,31 @@ private fun LightningApplicationPreview() {
         LightningScaffold(
             selectedDestination = AppDestination.HOME,
         ) {
+            ContentIsland()
+        }
+    }
+}
 
+@Preview
+@Composable
+private fun EmptyLightningApplicationPreview() {
+    LightningTheme {
+        LightningScaffold {
+            ContentIsland()
+        }
+    }
+}
+
+@Composable
+private fun ContentIsland() {
+    LargeIsland(
+        modifier = Modifier.padding(16.dp).fillMaxSize()
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text("Content Island")
         }
     }
 }

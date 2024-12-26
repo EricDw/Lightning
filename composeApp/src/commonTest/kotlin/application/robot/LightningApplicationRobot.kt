@@ -6,7 +6,7 @@ class LightningApplicationRobot(
 
     private val homeIcon: SemanticsNodeInteraction
         get() {
-            return test.onNodeWithText("Home", useUnmergedTree = true)
+            return test.onNodeWithContentDescription("Home", useUnmergedTree = true)
         }
 
 

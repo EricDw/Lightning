@@ -27,6 +27,6 @@ enum class AppDestination(
     SETTINGS(
         label = Res.string.label_settings,
         icon = Icons.Default.Settings,
-        contentDescription = Res.string.label_settings,
+        contentDescription = Res.string.description_settings_icon,
     ),
 }
