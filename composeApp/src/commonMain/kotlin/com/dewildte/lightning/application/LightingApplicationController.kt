@@ -7,6 +7,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.dewildte.lightning.design.components.LightningScaffold
@@ -50,7 +52,6 @@ fun LightningApplicationController(
         TransactionsRoute
     }
 
-
     LightningTheme(
         darkTheme = isSystemInDarkTheme()
     ) {
@@ -60,12 +61,36 @@ fun LightningApplicationController(
                 when (destination) {
                     AppDestination.HOME -> {
                         selectedDestination = destination
-                        navController.navigate(route = HomeRoute)
+                        navController.navigate(route = HomeRoute) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                     }
 
                     AppDestination.TRANSACTIONS -> {
                         selectedDestination = destination
-                        navController.navigate(route = TransactionsRoute)
+                        navController.navigate(route = TransactionsRoute) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                     }
 
                     AppDestination.SETTINGS -> {
@@ -83,18 +108,34 @@ fun LightningApplicationController(
                     model = model,
                     navigateToHome = {
                         selectedDestination = AppDestination.HOME
-                        navController.navigate(route = HomeRoute)
+                        navController.navigate(route = HomeRoute) {
+                            popUpTo(route = OnboardingRoute) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onLaunched = {
+                        selectedDestination = null
                     },
                 )
 
-                homeNavigationGraph(model = model)
+                homeNavigationGraph(
+                    model = model,
+                    onLaunched = {
+                        selectedDestination = AppDestination.HOME
+                    },
+                )
 
-                transactionsGraph(model = model)
+                transactionsGraph(
+                    model = model,
+                    onLaunched = {
+                        selectedDestination = AppDestination.TRANSACTIONS
+                    },
+                )
                 // TODO: Settings Graph
             }
         }
     }
-
 }
 
 @Immutable

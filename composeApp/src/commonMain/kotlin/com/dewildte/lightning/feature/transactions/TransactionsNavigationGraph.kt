@@ -1,5 +1,6 @@
 package com.dewildte.lightning.feature.transactions
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -14,18 +15,23 @@ data object TransactionsRoute
 internal data object TransactionsScreenRoute
 
 fun NavGraphBuilder.transactionsGraph(
-    model: LightningApplication
+    model: LightningApplication,
+    onLaunched: () -> Unit
 ) {
 
     navigation<TransactionsRoute>(
         startDestination = TransactionsScreenRoute
     ) {
 
-        composable<TransactionsScreenRoute>() {
+        composable<TransactionsScreenRoute>() { navBackStackEntry ->
 
             TransactionsScreenController(
                 viewModel = viewModel { TransactionsScreenViewModel(model = model) }
             )
+
+            LaunchedEffect(navBackStackEntry) {
+                onLaunched()
+            }
 
         }
 

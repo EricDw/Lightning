@@ -60,11 +60,19 @@ fun LightningScaffold(
         modifier = modifier,
         layoutType = layoutType,
         navigationSuiteItems = {
-            AppDestination.entries.forEach { destination ->
+            AppDestination.entries.forEachIndexed { index, destination ->
                 val itemModifier = when (layoutType) {
 
                     NavigationSuiteType.NavigationRail -> {
-                        Modifier.padding(start = 12.dp)
+                        val topPadding = if (index == 0) {
+                            16.dp
+                        } else {
+                            0.dp
+                        }
+                        Modifier.padding(
+                            start = 12.dp,
+                            top = topPadding
+                        )
                     }
 
                     else -> {

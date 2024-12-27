@@ -1,5 +1,6 @@
 package com.dewildte.lightning.feature.onboarding
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -18,13 +19,14 @@ data object LoginRoute
 fun NavGraphBuilder.onboardingNavigationGraph(
     model: LightningApplication,
     navigateToHome: () -> Unit,
+    onLaunched: () -> Unit,
 ) {
 
     navigation<OnboardingRoute>(
         startDestination = LoginRoute
     ) {
 
-        composable<LoginRoute> {
+        composable<LoginRoute> { backStackEntry ->
 
             val viewModel: LoginScreenViewModel = viewModel {
                 LoginScreenViewModel(
@@ -36,6 +38,10 @@ fun NavGraphBuilder.onboardingNavigationGraph(
                 viewModel = viewModel,
                 navigateToHome = navigateToHome
             )
+
+            LaunchedEffect(backStackEntry) {
+                onLaunched()
+            }
         }
 
     }

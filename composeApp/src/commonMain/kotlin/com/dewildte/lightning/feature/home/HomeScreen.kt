@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,6 +25,7 @@ import kotlinx.collections.immutable.persistentListOf
 import lightning.composeapp.generated.resources.Res
 import lightning.composeapp.generated.resources.message_loading
 import lightning.composeapp.generated.resources.message_select_transaction
+import lightning.composeapp.generated.resources.message_unknown_error
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -64,7 +62,15 @@ fun HomeScreenController(
         HomeScreen(
             twoPane = twoPane,
             isLoading = isLoading,
+            error = error,
+            selectedTransaction = selectedTransaction,
+            transactions = transactions,
+            onTransactionClick = viewModel::selectTransaction
         )
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.load()
     }
 
 }
@@ -73,8 +79,10 @@ fun HomeScreenController(
 fun HomeScreen(
     twoPane: Boolean = false,
     isLoading: Boolean = false,
+    error: HomeScreenError? = null,
     selectedTransaction: Transaction? = null,
     transactions: ImmutableList<Transaction> = persistentListOf(),
+    onTransactionClick: (transaction: Transaction) -> Unit = {},
 ) {
 
     TwoPaneLayout(
@@ -83,22 +91,39 @@ fun HomeScreen(
         showSecondaryContent = selectedTransaction != null,
         primaryContent = {
             LargeIsland {
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.message_loading),
-                            style = MaterialTheme.typography.displayMedium
+                when {
+                    error is HomeScreenError.UknownError -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.message_unknown_error, error.cause),
+                                style = MaterialTheme.typography.displaySmall,
+                            )
+                        }
+                    }
+
+                    isLoading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.message_loading),
+                                style = MaterialTheme.typography.displayMedium,
+                            )
+                        }
+                    }
+
+                    else -> {
+                        TransactionList(
+                            modifier = Modifier.fillMaxSize().padding(8.dp),
+                            selectedTransaction = selectedTransaction,
+                            transactions = transactions,
+                            onTransactionClick = onTransactionClick,
                         )
                     }
-                } else {
-                    TransactionList(
-                        modifier = Modifier.fillMaxSize().padding(8.dp),
-                        selectedTransaction = selectedTransaction,
-                        transactions = transactions,
-                    )
                 }
             }
         },
@@ -111,7 +136,7 @@ fun HomeScreen(
                     if (selectedTransaction != null) {
                         Text(
                             text = selectedTransaction.toString(),
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(16.dp),
                         )
                     } else {
                         Text(
@@ -129,7 +154,19 @@ fun HomeScreen(
 @Immutable
 data class HomeScreenState(
     val isLoading: Boolean = true,
+    val transactions: ImmutableList<Transaction> = persistentListOf(),
+    val selectedTransaction: Transaction? = null,
+    val error: HomeScreenError? = null,
 )
+
+sealed class HomeScreenError {
+
+    @Immutable
+    data class UknownError(
+        val cause: String,
+    ) : HomeScreenError()
+
+}
 
 @Preview
 @Composable

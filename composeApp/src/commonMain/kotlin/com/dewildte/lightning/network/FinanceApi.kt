@@ -8,6 +8,7 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
@@ -15,16 +16,23 @@ class FinanceApi(
     private val httpClient: HttpClient
 ) {
 
-    suspend fun retrieveAllTransactions(): List<TransactionDTO> {
-        return httpClient.get("/finance/transactions").body()
+    suspend fun getTransactions(
+        username: String,
+        password: String,
+    ): List<TransactionDTO> {
+        return httpClient.get("/finance/transactions") {
+            basicAuth(
+                username = username,
+                password = password,
+            )
+        }.body()
     }
 
-    suspend fun insertTransaction(transaction: Transaction) {
+    suspend fun putTransaction(transaction: Transaction) {
 
     }
 
     suspend fun deleteTransaction(transactionIdDTO: TransactionIdDTO) {
-
     }
 
 }

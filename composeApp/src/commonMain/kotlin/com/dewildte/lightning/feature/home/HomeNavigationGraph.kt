@@ -1,3 +1,4 @@
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -13,12 +14,17 @@ data object HomeScreenRoute
 
 fun NavGraphBuilder.homeNavigationGraph(
     model: LightningApplication,
+    onLaunched: () -> Unit,
 ) {
     navigation<HomeRoute>(
         startDestination = HomeScreenRoute
     ) {
         composable<HomeScreenRoute>() { navBackStackEntry ->
             HomeScreenController(model = model)
+
+            LaunchedEffect(navBackStackEntry) {
+                onLaunched()
+            }
         }
     }
 }

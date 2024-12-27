@@ -14,7 +14,7 @@ class DesktopLightningApplication(
 ) : ApplicationScope by applicationScope, LightningApplication {
 
     private var currentUsername: String = ""
-    private var currentPassword = ""
+    private var currentPassword: String = ""
     private var currentUser: User? = null
 
     private val httpClient by lazy {
@@ -39,7 +39,10 @@ class DesktopLightningApplication(
             is LightningApplication.Message.RetrieveTransactions -> {
                 try {
                     val mapper = TransactionMapper()
-                    val transactions = financeApi.retrieveAllTransactions()
+                    val transactions = financeApi.getTransactions(
+                        username = currentUsername,
+                        password = currentPassword,
+                    )
                         .map(mapper::mapTransactionDtoToTransaction)
                     message.response.complete(transactions)
                 } catch (error: Throwable) {
@@ -48,7 +51,6 @@ class DesktopLightningApplication(
             }
 
             is LightningApplication.Message.LoginWithEmailAndPassword -> {
-                println("Received: $message")
                 currentUser?.let { user ->
                     message.response.complete(user)
                     return
