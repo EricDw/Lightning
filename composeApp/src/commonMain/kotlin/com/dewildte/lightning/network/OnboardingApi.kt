@@ -1,6 +1,5 @@
 package com.dewildte.lightning.network
 
-import com.dewildte.lightning.dtos.users.UserDTO
 import com.dewildte.lightning.feature.onboarding.responses.LoginResponse
 import com.dewildte.lightning.models.users.User
 import io.ktor.client.*

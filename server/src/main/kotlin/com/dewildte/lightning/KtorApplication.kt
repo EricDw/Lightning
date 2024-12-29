@@ -45,6 +45,7 @@ fun Application.module(
         // TODO: Derive this table from the users stored in a database.
         table = mapOf(
             "dewildte@gmail.com" to digestFunction("Cat Couch Coffee$"),
+            "lauren.dewildt@gmail.com" to digestFunction("Cat Couch Coffee&"),
         ),
         digester = digestFunction,
     )

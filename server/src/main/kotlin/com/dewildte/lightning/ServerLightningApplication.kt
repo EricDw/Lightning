@@ -11,6 +11,10 @@ class ServerLightningApplication(
     private val transactionRepository: TransactionRepository = InMemoryTransactionRepository()
 ) : LightningApplication {
 
+    private val users = mapOf(
+        "dewildte@gmail.com" to "550e8400-e29b-41d4-a716-446655440000",
+        "lauren.dewildt@gmail.com" to "550e8400-e29b-41d4-a716-446655440001",
+    )
 
     override suspend fun recieve(message: Message) {
         when (message) {
@@ -29,9 +33,9 @@ class ServerLightningApplication(
 
                 try {
 
-                    check(email.value == "dewildte@gmail.com")
+                    val id = users[email.value]
+                    checkNotNull(id)
 
-                    val id = "550e8400-e29b-41d4-a716-446655440000"
                     val userId = UserId(
                         value = Uuid.parse(id)
                     )
