@@ -27,7 +27,7 @@ class ServerLightningApplication(
                 }
             }
 
-            is Message.LoginUserWithEmailAndPassword -> {
+            is Message.LoginWithEmailAndPassword -> {
                 // TODO: Load from database
                 val email = message.email
 

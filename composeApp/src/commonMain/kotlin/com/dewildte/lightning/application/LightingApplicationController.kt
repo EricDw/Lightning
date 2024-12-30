@@ -106,6 +106,7 @@ fun LightningApplicationController(
             ) {
                 onboardingNavigationGraph(
                     model = model,
+                    navController = navController,
                     navigateToHome = {
                         selectedDestination = AppDestination.HOME
                         navController.navigate(route = HomeRoute) {

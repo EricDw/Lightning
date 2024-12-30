@@ -2,11 +2,9 @@ package com.dewildte.lightning
 
 import com.dewildte.lightning.dtos.users.UserDTO
 import com.dewildte.lightning.dtos.users.UserIdDTO
-import com.dewildte.lightning.feature.onboarding.requests.LoginRequest
 import com.dewildte.lightning.feature.onboarding.responses.LoginResponse
 import com.dewildte.lightning.feature.transactions.data.TransactionMapper
 import com.dewildte.lightning.models.email.EmailAddress
-import com.dewildte.lightning.models.password.Password
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -16,7 +14,6 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.swagger.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
@@ -91,7 +88,7 @@ fun Application.module(
 
                         val email = EmailAddress(value = principalName)
 
-                        val message = LightningApplication.Message.LoginUserWithEmailAndPassword(
+                        val message = LightningApplication.Message.LoginWithEmailAndPassword(
                             email = email,
                         )
 
