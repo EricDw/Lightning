@@ -1,5 +1,7 @@
 package com.dewildte.lightning
 
+import com.dewildte.lightning.data.UserDAO
+import com.dewildte.lightning.data.configureDatabases
 import com.dewildte.lightning.dtos.users.UserDTO
 import com.dewildte.lightning.dtos.users.UserIdDTO
 import com.dewildte.lightning.feature.onboarding.responses.LoginResponse
@@ -17,6 +19,7 @@ import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
     val model = ServerLightningApplication()
@@ -32,20 +35,27 @@ fun Application.module(
     model: LightningApplication
 ) {
 
+    configureDatabases()
+
     val digestFunction = getDigestFunction(
         algorithm = "SHA-256"
     ) { password ->
         "ltng${password.length}"
     }
 
-    val hashedUserTable = UserHashedTableAuth(
-        // TODO: Derive this table from the users stored in a database.
-        table = mapOf(
-            "dewildte@gmail.com" to digestFunction("Cat Couch Coffee$"),
-            "lauren.dewildt@gmail.com" to digestFunction("Cat Couch Coffee&"),
-        ),
-        digester = digestFunction,
-    )
+    val hashedUserTable = transaction {
+
+        val cachedUsers = UserDAO.all()
+            .associate {
+                it.email to digestFunction(it.password)
+            }
+
+        UserHashedTableAuth(
+            // TODO: Derive this table from the users stored in a database.
+            table = cachedUsers,
+            digester = digestFunction,
+        )
+    }
 
     install(Authentication) {
         basic("auth-basic-hashed") {

@@ -1,10 +1,19 @@
 package com.dewildte.lightning
 
 import com.dewildte.lightning.LightningApplication.*
+import com.dewildte.lightning.data.UserDAO
+import com.dewildte.lightning.data.UserTable
+import com.dewildte.lightning.data.daoToModel
+import com.dewildte.lightning.data.suspendTransaction
 import com.dewildte.lightning.dtos.transactions.data.InMemoryTransactionRepository
 import com.dewildte.lightning.dtos.transactions.data.TransactionRepository
 import com.dewildte.lightning.models.users.User
 import com.dewildte.lightning.models.users.UserId
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.uuid.Uuid
 
 class ServerLightningApplication(
@@ -28,10 +37,29 @@ class ServerLightningApplication(
             }
 
             is Message.LoginWithEmailAndPassword -> {
-                // TODO: Load from database
+
                 val email = message.email
 
                 try {
+
+                    val cachedUser = suspendTransaction {
+                        try {
+                            UserDAO
+                                .find {
+                                    UserTable.email eq email.value
+                                }
+                                .limit(1)
+                                .map(::daoToModel)
+                                .firstOrNull()
+                        } catch (e: Throwable) {
+                            null
+                        }
+                    }
+
+                    cachedUser?.let {
+                        message.response.complete(it)
+                        return
+                    }
 
                     val id = users[email.value]
                     checkNotNull(id)
@@ -42,6 +70,15 @@ class ServerLightningApplication(
                     val user = User(
                         id = userId
                     )
+
+                    if (message.email.value == "dewildte@gmail.com") {
+                        suspendTransaction {
+                            UserDAO.new(id = UUID.fromString(id)) {
+                                this.email = "dewildte@gmail.com"
+                                this.password = "Cat Couch Coffee$"
+                            }
+                        }
+                    }
 
                     message.response.complete(user)
                 } catch (error: Throwable) {
