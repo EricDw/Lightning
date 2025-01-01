@@ -7,8 +7,9 @@ import com.dewildte.lightning.data.daoToModel
 import com.dewildte.lightning.data.suspendTransaction
 import com.dewildte.lightning.dtos.transactions.data.InMemoryTransactionRepository
 import com.dewildte.lightning.dtos.transactions.data.TransactionRepository
+import com.dewildte.lightning.feature.users.UserRepository
 import com.dewildte.lightning.models.users.User
-import com.dewildte.lightning.models.users.UserId
+import com.dewildte.lightning.models.users.Username
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -17,13 +18,14 @@ import java.util.*
 import kotlin.uuid.Uuid
 
 class ServerLightningApplication(
-    private val transactionRepository: TransactionRepository = InMemoryTransactionRepository()
+    private val transactionRepository: TransactionRepository,
+    private val userRepository: UserRepository,
 ) : LightningApplication {
-
-    private val users = mapOf(
-        "dewildte@gmail.com" to "550e8400-e29b-41d4-a716-446655440000",
-        "lauren.dewildt@gmail.com" to "550e8400-e29b-41d4-a716-446655440001",
-    )
+//
+//    private val users = mapOf(
+//        "dewildte@gmail.com" to "b11ca74b-98ae-4c24-91fd-9c98500f86aa",
+//        "lauren.dewildt@gmail.com" to "a72d33da-32da-417a-acc5-236cad056cca",
+//    )
 
     override suspend fun recieve(message: Message) {
         when (message) {
@@ -38,7 +40,7 @@ class ServerLightningApplication(
 
             is Message.LoginWithEmailAndPassword -> {
 
-                val email = message.email
+                val username = message.email
 
                 try {
 
@@ -46,7 +48,7 @@ class ServerLightningApplication(
                         try {
                             UserDAO
                                 .find {
-                                    UserTable.email eq email.value
+                                    UserTable.username eq username.value
                                 }
                                 .limit(1)
                                 .map(::daoToModel)
@@ -61,26 +63,8 @@ class ServerLightningApplication(
                         return
                     }
 
-                    val id = users[email.value]
-                    checkNotNull(id)
+                    throw IllegalStateException("User: $username not found.")
 
-                    val userId = UserId(
-                        value = Uuid.parse(id)
-                    )
-                    val user = User(
-                        id = userId
-                    )
-
-                    if (message.email.value == "dewildte@gmail.com") {
-                        suspendTransaction {
-                            UserDAO.new(id = UUID.fromString(id)) {
-                                this.email = "dewildte@gmail.com"
-                                this.password = "Cat Couch Coffee$"
-                            }
-                        }
-                    }
-
-                    message.response.complete(user)
                 } catch (error: Throwable) {
                     message.response.completeExceptionally(exception = error)
                 }

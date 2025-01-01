@@ -1,11 +1,14 @@
 package com.dewildte.lightning
 
-import com.dewildte.lightning.data.UserDAO
+import com.dewildte.lightning.auth.configureAuthentication
+import com.dewildte.lightning.data.PostgresUserRepository
 import com.dewildte.lightning.data.configureDatabases
+import com.dewildte.lightning.dtos.transactions.data.InMemoryTransactionRepository
 import com.dewildte.lightning.dtos.users.UserDTO
 import com.dewildte.lightning.dtos.users.UserIdDTO
 import com.dewildte.lightning.feature.onboarding.responses.LoginResponse
 import com.dewildte.lightning.feature.transactions.data.TransactionMapper
+import com.dewildte.lightning.feature.users.UserRepository
 import com.dewildte.lightning.models.email.EmailAddress
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -18,53 +21,31 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.*
-import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
-    val model = ServerLightningApplication()
+    val userRepository = PostgresUserRepository()
+
+    val model = ServerLightningApplication(
+        transactionRepository = InMemoryTransactionRepository(),
+        userRepository = userRepository,
+    )
 
     embeddedServer(
         factory = Netty,
         configure = { envConfig() },
-        module = { module(model) }
+        module = { module(model, userRepository = userRepository) }
     ).start(wait = true)
 }
 
 fun Application.module(
-    model: LightningApplication
+    model: LightningApplication,
+    userRepository: UserRepository,
 ) {
 
     configureDatabases()
-
-    val digestFunction = getDigestFunction(
-        algorithm = "SHA-256"
-    ) { password ->
-        "ltng${password.length}"
-    }
-
-    val hashedUserTable = transaction {
-
-        val cachedUsers = UserDAO.all()
-            .associate {
-                it.email to digestFunction(it.password)
-            }
-
-        UserHashedTableAuth(
-            // TODO: Derive this table from the users stored in a database.
-            table = cachedUsers,
-            digester = digestFunction,
-        )
-    }
-
-    install(Authentication) {
-        basic("auth-basic-hashed") {
-            realm = "Access to the '/' path"
-            validate { credentials ->
-                hashedUserTable.authenticate(credentials)
-            }
-        }
-    }
+    configureAuthentication(
+        userRepository = userRepository,
+    )
 
     install(plugin = ContentNegotiation) {
         json()
